@@ -5,7 +5,6 @@ import numpy as np
 import seaborn as sns
 import warnings
 
-# ignore all warnings
 warnings.filterwarnings("ignore")
 
 from src.analyze.plot import plot_violin

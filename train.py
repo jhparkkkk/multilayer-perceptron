@@ -22,7 +22,7 @@ def main():
     mlp.train(X_train, y_train, X_valid, y_valid)
 
     mlp.save_model("data/mlp_model.pkl")
-    print("> Model saved to './data/mlp_model.pkl'")
+    print("> saving model './data/mlp_model.pkl' to disk")
 
     mlp.plot_learning_curves()
 

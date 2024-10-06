@@ -24,11 +24,9 @@ def load_and_prepare_data(file_path):
 
 
 def split_and_save_data(data, seed=42, test_size=0.2, save_dir="data"):
-    # Split x and y
     X = data.drop("diagnosis", axis=1)
     y = data["diagnosis"]
 
-    # Split into train and test dataset
     X_train, X_valid, y_train, y_valid = train_test_split(
         X, y, test_size=test_size, random_state=seed
     )
@@ -37,7 +35,6 @@ def split_and_save_data(data, seed=42, test_size=0.2, save_dir="data"):
     X_train_scaled = scaler.fit_transform(X_train)
     X_valid_scaled = scaler.transform(X_valid)
 
-    # Apply SMOTE to balance the training set
     smote = SMOTE(random_state=seed)
     X_train_resampled, y_train_resampled = smote.fit_resample(X_train_scaled, y_train)
 
@@ -62,8 +59,12 @@ def split_and_save_data(data, seed=42, test_size=0.2, save_dir="data"):
 
 
 if __name__ == "__main__":
-    file_path = "data/data.csv"
+    try:
+        file_path = "data/data.csv"
 
-    data = load_and_prepare_data(file_path)
+        data = load_and_prepare_data(file_path)
 
-    split_and_save_data(data)
+        split_and_save_data(data)
+    except Exception as error:
+        print(error)
+        exit(1)

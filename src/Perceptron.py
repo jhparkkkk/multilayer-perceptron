@@ -57,32 +57,6 @@ class MLP:
             self.weights[i] -= self.learning_rate * dw
             self.biases[i] -= self.learning_rate * db
 
-    def train_keep(self, X_train, y_train):
-        self.losses_train = []
-        self.accuracies_train = []
-        self.losses_valid = []
-        self.accuracies_valid = []
-        
-        for epoch in range(self.epochs):
-            indices = np.arange(X_train.shape[0])
-            np.random.shuffle(indices)
-            X_train = X_train[indices]
-            y_train = y_train[indices]
-
-            for i in range(0, X_train.shape[0], self.batch_size):
-                X_batch = X_train[i:i + self.batch_size]
-                y_batch = y_train[i:i + self.batch_size]
-
-                y_batch_pred = self.feedforward(X_batch)
-                self.backpropagation(X_batch, y_batch)
-
-            y_train_pred = self.feedforward(X_train)
-            train_loss = self.compute_loss(y_train, y_train_pred)
-            train_accuracy = np.mean(np.argmax(y_train_pred, axis=1) == np.argmax(y_train, axis=1))
-            self.losses_train.append(train_loss)
-            self.accuracies_train.append(train_accuracy)
-
-            print(f"epoch {epoch+1:02d}/{self.epochs} - loss: {train_loss:.4f} - accuracy: {train_accuracy:.4f}")
 
     def train(self, X_train, y_train, X_valid=None, y_valid=None):
         self.losses_train = []
@@ -115,19 +89,12 @@ class MLP:
                 val_accuracy = np.mean(np.argmax(y_valid_pred, axis=1) == np.argmax(y_valid, axis=1))
                 self.losses_valid.append(val_loss)
                 self.accuracies_valid.append(val_accuracy)
-                print(f"Epoch {epoch+1}/{self.epochs} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f} - Val Loss: {val_loss:.4f} - Val Accuracy: {val_accuracy:.4f}")
-            else:
-                print(f"Epoch {epoch+1}/{self.epochs} - Train Loss: {train_loss:.4f} - Train Accuracy: {train_accuracy:.4f}")
-    
+                print(f"epoch {epoch+1}/{self.epochs} - loss: {train_loss:.4f} - val_loss: {val_loss:.4f}")
+
     def predict(self, X):
         self.feedforward(X)
         y_pred_prob = self.activations[-1]  
         return y_pred_prob
-
-    def predict_keep(self, X):
-        y_pred_prob = self.feedforward(X) 
-        return np.argmax(y_pred_prob, axis=1) 
-    
 
     def save_model(self, file_path):
         with open(file_path, 'wb') as f:
