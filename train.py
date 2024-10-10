@@ -10,7 +10,9 @@ def main():
     
     np.random.seed(args.seed)
 
-    df = pd.read_csv("data/train_data.csv")
+    df = pd.read_csv("data_training.csv")
+    df.replace({'B': 0, 'M': 1}, inplace=True)
+
     y = df.iloc[:, 0].values 
     y_one_hot = np.eye(2)[y]
     X = df.iloc[:, 1:].values
@@ -21,7 +23,7 @@ def main():
     mlp = MLP(layers=layers, learning_rate=args.learning_rate, epochs=args.epochs, batch_size=args.batch_size)
     mlp.train(X_train, y_train, X_valid, y_valid)
 
-    mlp.save_model("data/mlp_model.pkl")
+    mlp.save_model("mlp_model.pkl")
     print("> saving model './data/mlp_model.pkl' to disk")
 
     mlp.plot_learning_curves()

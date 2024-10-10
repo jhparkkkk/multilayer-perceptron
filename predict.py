@@ -5,6 +5,8 @@ from src.Perceptron import MLP
 
 def main():
     df_valid = pd.read_csv("data/valid_data.csv")
+    df_valid.replace({'B': 0, 'M': 1}, inplace=True)
+    
     y_valid = df_valid.iloc[:, 0].values 
     y_valid_one_hot = np.eye(2)[y_valid]  
     X_valid = df_valid.iloc[:, 1:].values
