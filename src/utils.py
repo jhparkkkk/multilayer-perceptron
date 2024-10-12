@@ -22,15 +22,19 @@ def balance_data(X, y):
     return X_balanced, y_balanced
 
 def preprocess_target(df):
+    print(df)
+
     label_encoder = LabelEncoder()
     y = df.iloc[:, 0].values
     y = label_encoder.fit_transform(y)
+    print(y)
     y = np.eye(2)[y]
 
     return y
 
 def preprocess_features(df):
     df = df.drop(df.columns[0], axis=1)
+    print(df)
     X = df.iloc[:, 1:].values
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)

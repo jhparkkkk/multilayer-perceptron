@@ -13,11 +13,11 @@ def main():
     df = pd.read_csv("data_training.csv")
     
     X, Y = preprocess_data(df)
-    print(type(X))
-    print(type(Y))
-    print(X.shape)
-    print(Y.shape)
-    print(Y)
+    # print(type(X))
+    # print(type(Y))
+    # print(X.shape)
+    # print(Y.shape)
+    # print(Y)
     X_train, X_valid, y_train, y_valid = train_test_split(X, Y, test_size=0.2, random_state=args.seed)
 
     layers = [X_train.shape[1]] + args.layers + [y_train.shape[1]]
@@ -25,7 +25,7 @@ def main():
     mlp.train(X_train, y_train, X_valid, y_valid)
 
     mlp.save_model("mlp_model.pkl")
-    print("> saving model './data/mlp_model.pkl' to disk")
+    print("> saving model './mlp_model.pkl' to disk")
 
     mlp.plot_learning_curves()
 

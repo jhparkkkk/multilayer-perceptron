@@ -1,38 +1,40 @@
-import argparse
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
-from src.utils import parse_arguments
+from sklearn.preprocessing import StandardScaler
 from src.Perceptron import MLP
 
 def main():
-    args = parse_arguments()
-    
-    np.random.seed(args.seed)
+    df_valid = pd.read_csv("data/valid_data.csv")
+    y_valid = df_valid.iloc[:, 0].values 
+    y_valid_one_hot = np.eye(2)[y_valid]  
+    X_valid = df_valid.iloc[:, 1:].values
 
-    df = pd.read_csv("./data/train_data.csv")
+    mlp = MLP()
+    mlp.load_model("mlp_model.pkl")
 
-    y = df.iloc[:, 0].values 
-    y_one_hot = np.eye(2)[y]
-    X = df.iloc[:, 1:].values
+    print(type(X_valid))
+    print(X_valid.shape)
+    print(y_valid.shape)
+    print(y_valid_one_hot.shape)
 
-    print(type(X))
-    print(type(y_one_hot))
-    print(X.shape)
-    print(y_one_hot.shape)
-    print(y_one_hot)
+    print(X_valid)
+    print(X_valid.shape)
+    y_valid_pred_prob = mlp.predict(X_valid)
+    y_valid_pred = np.argmax(y_valid_pred_prob, axis=1)
 
-    X_train, X_valid, y_train, y_valid = train_test_split(X, y_one_hot, test_size=0.2, random_state=args.seed)
+    print(y_valid_pred_prob)
+    print(y_valid_pred)
+    print(y_valid_one_hot.shape)
+    print(y_valid_pred_prob.shape)
+    print(y_valid.shape)
+    print(y_valid)  
+    print(y_valid_pred)
 
-    layers = [X_train.shape[1]] + args.layers + [y_train.shape[1]]
-    mlp = MLP(layers=layers, learning_rate=args.learning_rate, epochs=args.epochs, batch_size=args.batch_size)
-    mlp.train(X_train, y_train, X_valid, y_valid)
+    val_loss = mlp.compute_loss(y_valid_one_hot, y_valid_pred_prob)
+    val_accuracy = np.mean(y_valid_pred == y_valid)
 
-    mlp.save_model("mlp_model.pkl")
-    print("> saving model './data/mlp_model.pkl' to disk")
-
-    mlp.plot_learning_curves()
-
+    print(f"Validation loss: {val_loss:.4f}")
+    print(f"Validation accuracy: {val_accuracy:.4f}")
 
 if __name__ == "__main__":
     try:
