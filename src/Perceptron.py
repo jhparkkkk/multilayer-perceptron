@@ -58,7 +58,7 @@ class MLP:
             self.biases[i] -= self.learning_rate * db
 
 
-    def train(self, X_train, y_train, X_valid=None, y_valid=None, max_no_improve=5):
+    def train(self, X_train, y_train, X_valid=None, y_valid=None, max_no_improve=10):
         self.losses_train = []
         self.accuracies_train = []
         self.losses_valid = []
@@ -105,7 +105,7 @@ class MLP:
                     epochs_no_improve += 1
 
                 if epochs_no_improve >= max_no_improve:
-                    print(f"stopping after {epoch+1} epochs since no improvement for {max_no_improve} époques.")
+                    print(f"stopping after {epoch+1} epochs since no improvement for {max_no_improve} epochs")
                     break
 
 
