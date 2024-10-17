@@ -14,7 +14,7 @@ from src.analyze.plot import plot_count
 
 
 if __name__ == "__main__":
-    data = pd.read_csv("data/data.csv", header=None)
+    data = pd.read_csv("data.csv", header=None)
     print(data.describe())
 
     # delete first column
