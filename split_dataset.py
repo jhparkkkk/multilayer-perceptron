@@ -3,7 +3,6 @@ import numpy as np
 from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from imblearn.over_sampling import SMOTE
 
 
 def data_spliter(x, y, proportion):
@@ -60,36 +59,6 @@ def split_and_save_data(data, seed=43, test_size=0.2, save_dir="data"):
 
     train_data = X_train
     valid_data = X_valid
-    
-    # resample with SMOTE
-    
-
-    #train_data = train_data.drop(index=0)
-    #valid_data = valid_data.iloc[1:]
-
-    
-    # print(y_train)            
-    
-
-    # scaler = StandardScaler()
-    # X_train_scaled = scaler.fit_transform(X_train)
-    # X_valid_scaled = scaler.transform(X_valid)
-
-    # smote = SMOTE(random_state=seed)
-    # X_train_resampled, y_train_resampled = smote.fit_resample(X_train_scaled, y_train)
-
-    # X_valid_scaled = pd.DataFrame(X_valid_scaled, columns=X.columns)
-    # X_train_scaled = pd.DataFrame(X_train_resampled, columns=X.columns)
-
-    # y_train_resampled = pd.Series(y_train_resampled, name="diagnosis")
-    # y_valid.reset_index(drop=True, inplace=True)
-
-    # # X_valid_scaled.insert(0, "diagnosis", y_valid)
-    # valid_data = X_valid_scaled
-
-    # # X_train_scaled.insert(0, "diagnosis", y_train_resampled)
-    # train_data = X_train_scaled
-
 
     train_data.to_csv(f"data_training.csv", index=False, header=False)
     valid_data.to_csv(f"data_test.csv", index=False, header=False)
@@ -100,11 +69,11 @@ def split_and_save_data(data, seed=43, test_size=0.2, save_dir="data"):
 
 
 if __name__ == "__main__":
-    # try:
+    try:
         file_path = "data.csv"
 
 
         split_and_save_data(file_path)
-    # except Exception as error:
-        # print(error)
-        # exit(1)
+    except Exception as error:
+        print(error)
+        exit(1)
